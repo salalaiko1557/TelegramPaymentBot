@@ -50,6 +50,9 @@ class TelegramController extends Controller
   public function webhookHandler() {
 
     $update  = $this->telegram->commandsHandler(true);
+
+    info($update);
+
     $message = $update->getMessage();
 
 
@@ -59,10 +62,8 @@ class TelegramController extends Controller
 
     $from      = $message->getFrom();
     $chat_data = $message->getChat();
-    info($chat_data);
 
     if ('supergroup' == $chat_data->getType()) {
-
       $chat = Chat::find($chat_data->getId());
       if ( ! $chat) {
         $chat = Chat::create(json_decode($chat_data, true));

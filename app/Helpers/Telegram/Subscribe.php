@@ -51,7 +51,7 @@ class Subscribe {
           $subscription_cost = ($subscription_cost) ? $subscription_cost : 0;
           $merchant_id       = Setting::getSettings('merchant_id');
           $merchant_id       = ($merchant_id) ? $merchant_id->value : 0;
-          $secret_word       = '2k-dev';
+          $secret_word       = 'ignetdapassion';
           $order_id          = $update->getCallbackQuery()->getMessage()->getFrom()->getId();
           $sign              = md5($merchant_id.':'.$subscription_cost.':'.$secret_word.':'.$order_id);
 
