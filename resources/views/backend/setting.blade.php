@@ -24,43 +24,43 @@
           <li><a href="#" onclick="event.preventDefault(); document.getElementById('getwebhookinfo').submit();"> Получить информацию</a></li>
         </ul>
       </div>
-      <input type="url" class="form-control" id="url_callback_bot" name="url_callback_bot" value="{{ $url_callback_bot or '' }}" required>
+      <input type="url" class="form-control" id="url_callback_bot" name="url_callback_bot" value="{{ $url_callback_bot ?? '' }}" required>
     </div>
   </div>
   <div class="form-group">
     <label>Admin email</label>
     <div class="input-group">
-      <input type="email" class="form-control" id="admin_email" name="admin_email" value="{{ $admin_email or '' }}" required>
+      <input type="email" class="form-control" id="admin_email" name="admin_email" value="{{ $admin_email ?? '' }}" required>
     </div>
   </div>
   <div class="form-group">
     <label>Merchant id</label>
     <div class="input-group">
-      <input type="number" class="form-control" id="merchant_id" name="merchant_id" value="{{ $merchant_id or '' }}" required>
+      <input type="number" class="form-control" id="merchant_id" name="merchant_id" value="{{ $merchant_id ?? '' }}" required>
     </div>
   </div>
   <div class="form-group">
     <label>Weekly subscription price</label>
     <div class="input-group">
-      <input type="number" class="form-control" id="subscription_cost_week" name="subscription_cost_week" value="{{ $subscription_cost_week or '' }}" required>
+      <input type="number" class="form-control" id="subscription_cost_week" name="subscription_cost_week" value="{{ $subscription_cost_week ?? '' }}" required>
     </div>
   </div>
   <div class="form-group">
     <label>Monthly subscription price</label>
     <div class="input-group">
-      <input type="number" class="form-control" id="subscription_cost_month" name="subscription_cost_month" value="{{ $subscription_cost_month or '' }}" required>
+      <input type="number" class="form-control" id="subscription_cost_month" name="subscription_cost_month" value="{{ $subscription_cost_month ?? '' }}" required>
     </div>
   </div>
   <div class="form-group">
     <label>Yearly subscription price</label>
     <div class="input-group">
-      <input type="number" class="form-control" id="subscription_cost_year" name="subscription_cost_year" value="{{ $subscription_cost_year or '' }}" required>
+      <input type="number" class="form-control" id="subscription_cost_year" name="subscription_cost_year" value="{{ $subscription_cost_year ?? '' }}" required>
     </div>
   </div>
   <div class="form-group">
     <label>Invite chat link</label>
     <div class="input-group">
-      <input type="url" class="form-control" id="chat_link" name="chat_link" value="{{ $chat_link or '' }}" required>
+      <input type="url" class="form-control" id="chat_link" name="chat_link" value="{{ $chat_link ?? '' }}" required>
     </div>
   </div>
   <div class="form-group">
@@ -86,7 +86,7 @@
 
 <form action="{{ route('admin.setting.setwebhook') }}" id="setwebhook" method="post" style="display: none;">
   {{ csrf_field() }}
-  <input type="hidden" name="url" value="{{ $url_callback_bot or '' }}">
+  <input type="hidden" name="url" value="{{ $url_callback_bot ?? '' }}">
 </form>
 
 <form action="{{ route('admin.setting.getwebhookinfo') }}" id="getwebhookinfo" method="post" style="display: none;">

@@ -47,7 +47,7 @@ return [
     'bots'                         => [
         'common' => [
             'username'            => 'IgnetBot',
-            'token'               => env('TELEGRAM_BOT_TOKEN', '700220027:AAHe0ZCWsgXekWMRLavldcN4TL2CAjdoG3g'),
+            'token'               => env('TELEGRAM_BOT_TOKEN', '630850760:AAEMA1GW1-BQVViqV_-G4liQyPoudEODgEo'),
             //'certificate_path'    => env('TELEGRAM_CERTIFICATE_PATH', 'YOUR-CERTIFICATE-PATH'),
            // 'webhook_url'         => env('TELEGRAM_WEBHOOK_URL', 'YOUR-BOT-WEBHOOK-URL'),
             'commands'            => [

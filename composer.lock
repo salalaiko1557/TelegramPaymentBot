@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a62b414569759774a99051885dede729",
+    "content-hash": "f66c6c7ece935eee9a4cea59ccdcad4f",
     "packages": [
         {
             "name": "amphp/amp",
@@ -2003,12 +2003,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "3f5f2a8c8ea3f84f81a0844fc216be0f9d404f85"
+                "reference": "156b4ae3f7fd6f96668891f2cd082a2487283fdf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/3f5f2a8c8ea3f84f81a0844fc216be0f9d404f85",
-                "reference": "3f5f2a8c8ea3f84f81a0844fc216be0f9d404f85",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/156b4ae3f7fd6f96668891f2cd082a2487283fdf",
+                "reference": "156b4ae3f7fd6f96668891f2cd082a2487283fdf",
                 "shasum": ""
             },
             "require": {
@@ -2141,7 +2141,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2019-01-08T18:04:07+00:00"
+            "time": "2019-01-09T10:34:49+00:00"
         },
         {
             "name": "laravel/nexmo-notification-channel",
@@ -6544,10 +6544,10 @@
     ],
     "minimum-stability": "dev",
     "stability-flags": {
-        "danog/madelineproto": 20,
         "amphp/dns": 20,
         "amphp/file": 20,
-        "amphp/uri": 20
+        "amphp/uri": 20,
+        "danog/madelineproto": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
