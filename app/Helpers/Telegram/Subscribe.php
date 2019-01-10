@@ -41,7 +41,7 @@ class Subscribe {
           $order_id          = $update->getCallbackQuery()->getMessage()->getFrom()->getId();
           $sign              = md5($merchant_id.':'.$subscription_cost.':'.$secret_word.':'.$order_id);
 
-          $url   = 'http://www.free-kassa.ru/merchant/cash.php?' . 'm=' . $merchant_id . '&oa=' . $subscription_cost . '&o=' . $order_id . '&s=' . $sign . '&us_type=subscribe&count='.$tarif;
+          $url   = 'http://www.free-kassa.ru/merchant/cash.php?' . 'm=' . $merchant_id . '&oa=' . $subscription_cost . '&o=' . $order_id . '&s=' . $sign . '&us_type=subscribe&us_rate='.$tarif;
 
         $inlineLayout = [
             [

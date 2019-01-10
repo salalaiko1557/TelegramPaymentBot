@@ -133,9 +133,9 @@ class NoticeController extends Controller
       $text .= sprintf('%s' . PHP_EOL, 'Стоимость месячной подписки: ' . $subscription_cost_month . ' руб/мес');
       $text .= sprintf('%s' . PHP_EOL, 'Стоимость годовой подписки: ' . $subscription_cost_year . ' руб/мес');
 
-      $url_week   = 'http://www.free-kassa.ru/merchant/cash.php?' . 'm=' . $merchant_id . '&oa=' . $subscription_cost_week . '&o=' . $user->id . '&s=' . $sign . '&us_type=subscribe&count=week';
-      $url_month   = 'http://www.free-kassa.ru/merchant/cash.php?' . 'm=' . $merchant_id . '&oa=' . $subscription_cost_month . '&o=' . $user->id . '&s=' . $sign . '&us_type=subscribe&count=month';
-      $url_year   = 'http://www.free-kassa.ru/merchant/cash.php?' . 'm=' . $merchant_id . '&oa=' . $subscription_cost_year . '&o=' . $user->id . '&s=' . $sign . '&us_type=subscribe&count=year';
+      $url_week   = 'http://www.free-kassa.ru/merchant/cash.php?' . 'm=' . $merchant_id . '&oa=' . $subscription_cost_week . '&o=' . $user->id . '&s=' . $sign . '&us_type=subscribe&us_rate=week';
+      $url_month   = 'http://www.free-kassa.ru/merchant/cash.php?' . 'm=' . $merchant_id . '&oa=' . $subscription_cost_month . '&o=' . $user->id . '&s=' . $sign . '&us_type=subscribe&us_rate=month';
+      $url_year   = 'http://www.free-kassa.ru/merchant/cash.php?' . 'm=' . $merchant_id . '&oa=' . $subscription_cost_year . '&o=' . $user->id . '&s=' . $sign . '&us_type=subscribe&us_rate=year';
 
 
 

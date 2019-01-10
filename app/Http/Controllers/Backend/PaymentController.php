@@ -39,13 +39,13 @@ class PaymentController extends Controller
       die('wrong request');
     }
 
-    if ( ! isset($_REQUEST['count'])) {
+    if ( ! isset($_REQUEST['us_rate'])) {
 
         die('wrong tarif');
       }
 
     $type     = $_REQUEST['us_type'];
-    $tarif = $_REQUEST['count'];
+    $tarif = $_REQUEST['us_rate'];
     $amount   = $_REQUEST['AMOUNT'];
     $order_id = $_REQUEST['MERCHANT_ORDER_ID'];
 
