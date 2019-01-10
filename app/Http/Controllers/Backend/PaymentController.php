@@ -26,7 +26,7 @@ class PaymentController extends Controller
 
     $merchant_id = Setting::getSettings('merchant_id');
     $merchant_id = ($merchant_id) ? $merchant_id->value : 0;
-    $secret_word = 'ignetdapassion';
+    $secret_word = '0uv1cxfe';
 
     $sign = md5($merchant_id.':'.$_REQUEST['AMOUNT'].':'.$secret_word.':'.$_REQUEST['MERCHANT_ORDER_ID']);
 
@@ -75,6 +75,7 @@ class PaymentController extends Controller
 
       $teluser->subscribe_date = $now;
       $teluser->sub_notice     = 0;
+      $teluser->tarif = $tarif;
       $teluser->save();
 
       NoticeController::subscription_paid($teluser);

@@ -87,13 +87,19 @@ class NoticeController extends Controller
   /**
    * Notice users when subscription expired
    */
-  public static function subscription_expired($days) {
+  public static function subscription_expired_week($days, $tarif) {
 
     $telegram = new Api(Telegram::getAccessToken());
     $now      = new \DateTime();
     $last_pay = $now->modify('-'.$days.' day');
     $last_pay = $last_pay->format('Y-m-d');
-    $users    = TelegramUser::whereDate('subscribe_date', '<', $last_pay)->where('in_chat', '=', 1)->take(5)->get();
+    $users    = TelegramUser::whereDate('subscribe_date', '<', $last_pay)
+                ->where([
+                    ['in_chat', '=', 1],
+                    ['tarif', '=', $tarif]
+                ])
+                ->take(5)
+                ->get();
 
     foreach($users as $user) {
 
@@ -116,7 +122,7 @@ class NoticeController extends Controller
 
       $merchant_id       = Setting::getSettings('merchant_id');
       $merchant_id       = ($merchant_id) ? $merchant_id->value : 0;
-      $secret_word       = 'ignetdapassion';
+      $secret_word       = '0uv1cxfe';
       $sign_week              = md5($merchant_id.':'.$subscription_cost_week.':'.$secret_word.':'.$user->id);
       $sign_month              = md5($merchant_id.':'.$subscription_cost_month.':'.$secret_word.':'.$user->id);
       $sign_year              = md5($merchant_id.':'.$subscription_cost_year.':'.$secret_word.':'.$user->id);
