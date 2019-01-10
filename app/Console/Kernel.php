@@ -25,16 +25,24 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-   
+
       \Log::info('schedule');
-
+//Если недельная подписка
       $schedule->call(function () {
-        NoticeController::subscription_expires();
+        NoticeController::subscription_expired(7);
+      })->everyMinute();
+//Если месячная подписка
+      $schedule->call(function () {
+        NoticeController::subscription_expired(30);
+      })->everyMinute();
+//Если годовая подписка
+      $schedule->call(function () {
+        NoticeController::subscription_expired(360);
       })->everyMinute();
 
-      $schedule->call(function () {
-        NoticeController::subscription_expired();
-      })->everyMinute();
+    //   $schedule->call(function () {
+    //     NoticeController::subscription_expired();
+    //   })->everyMinute();
 
     }
 

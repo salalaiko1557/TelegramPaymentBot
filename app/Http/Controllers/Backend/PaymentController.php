@@ -39,15 +39,29 @@ class PaymentController extends Controller
       die('wrong request');
     }
 
+    if ( ! isset($_REQUEST['count'])) {
+
+        die('wrong tarif');
+      }
+
     $type     = $_REQUEST['us_type'];
+    $tarif = $_REQUEST['count'];
     $amount   = $_REQUEST['AMOUNT'];
     $order_id = $_REQUEST['MERCHANT_ORDER_ID'];
 
-    if ('subscribe' == $type) {
+    if ('subscribe' == $type && 'count' == $tarif) {
 
-      $subscription_cost = Setting::getSettings('subscription_cost');
-      $subscription_cost = ($subscription_cost) ? $subscription_cost->value : 0;
-      if ($subscription_cost != $amount) {
+    $subscription_cost_week = Setting::getSettings('subscription_cost_week');
+    $subscription_cost_week = ($subscription_cost_week) ? $subscription_cost_week->value : 0;
+    $subscription_cost_month = Setting::getSettings('subscription_cost_month');
+    $subscription_cost_month = ($subscription_cost_month) ? $subscription_cost_month->value : 0;
+    $subscription_cost_year = Setting::getSettings('subscription_cost_year');
+    $subscription_cost_year = ($subscription_cost_year) ? $subscription_cost_year->value : 0;
+
+
+    //   $subscription_cost = Setting::getSettings('subscription_cost');
+    //   $subscription_cost = ($subscription_cost) ? $subscription_cost->value : 0;
+      if (($subscription_cost_week != $amount) || ($subscription_cost_month != $amount) || ($subscription_cost_year != $amount)) {
         die('wrong amount');
       }
 
@@ -64,31 +78,32 @@ class PaymentController extends Controller
       $teluser->save();
 
       NoticeController::subscription_paid($teluser);
-    } else {
+     }
+    //else {
 
-      $order = Order::find($_REQUEST['MERCHANT_ORDER_ID']);
-      if ( ! $order) {
-        die('wrong order id');
-      }
+    //   $order = Order::find($_REQUEST['MERCHANT_ORDER_ID']);
+    //   if ( ! $order) {
+    //     die('wrong order id');
+    //   }
 
-      if (floatval($amount) < floatval($order->amount)) {
-        die('wrong amount');
-      }
+    //   if (floatval($amount) < floatval($order->amount)) {
+    //     die('wrong amount');
+    //   }
 
-      $order->status = 1;
-      $order->save();
+    //   $order->status = 1;
+    //   $order->save();
 
-      $products      = unserialize($order->products);
-      $teluser       = TelegramUser::find($order->telegram_user_id);
-      $paid_products = unserialize($teluser->products);
-      $paid_products = ( ! is_array($paid_products)) ? [] : $paid_products;
-      $result        = array_unique(array_merge($products, $paid_products));
+    //   $products      = unserialize($order->products);
+    //   $teluser       = TelegramUser::find($order->telegram_user_id);
+    //   $paid_products = unserialize($teluser->products);
+    //   $paid_products = ( ! is_array($paid_products)) ? [] : $paid_products;
+    //   $result        = array_unique(array_merge($products, $paid_products));
 
-      $teluser->products = serialize($result);
-      $teluser->save();
+    //   $teluser->products = serialize($result);
+    //   $teluser->save();
 
-      NoticeController::vebinar_paid($order);
-    }
+      //NoticeController::vebinar_paid($order);
+    //}
 
     die('ok');
    }

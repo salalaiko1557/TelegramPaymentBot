@@ -30,23 +30,9 @@ class Subscribe {
      *
      * @return string
      */
-    public function subscribes($days, $user, $subscription_cost, $update, $text) {
-
-        $today    = new \DateTime();
-        if (null == $user->subscribe_date) {
-          $now      = new \DateTime();
-          $last_pay = $now->modify('-31 day');
-
-        } else {
-          $last_pay = new \DateTime($user->subscribe_date);
-        }
-        $interval = $today->diff($last_pay);
-
-        $reply_markup = new Keyboard();
-        $reply_markup->inline();
+    public function subscribes($days, $user, $subscription_cost, $update, $text, $tarif) {
 
 
-        if ($interval->days > 30) {
 
           $subscription_cost = ($subscription_cost) ? $subscription_cost : 0;
           $merchant_id       = Setting::getSettings('merchant_id');
@@ -55,8 +41,8 @@ class Subscribe {
           $order_id          = $update->getCallbackQuery()->getMessage()->getFrom()->getId();
           $sign              = md5($merchant_id.':'.$subscription_cost.':'.$secret_word.':'.$order_id);
 
-          $url   = 'http://www.free-kassa.ru/merchant/cash.php?' . 'm=' . $merchant_id . '&oa=' . $subscription_cost . '&o=' . $order_id . '&s=' . $sign . '&us_type=subscribe';
-        }
+          $url   = 'http://www.free-kassa.ru/merchant/cash.php?' . 'm=' . $merchant_id . '&oa=' . $subscription_cost . '&o=' . $order_id . '&s=' . $sign . '&us_type=subscribe&count='.$tarif;
+
         $inlineLayout = [
             [
                 Keyboard::inlineButton(['text' => 'Оплатить', 'url' => $url]),
@@ -74,4 +60,5 @@ class Subscribe {
             'reply_markup' => $keyboard
           ]);
     }
+
 }

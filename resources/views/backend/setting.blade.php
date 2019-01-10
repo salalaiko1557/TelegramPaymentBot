@@ -28,9 +28,9 @@
     </div>
   </div>
   <div class="form-group">
-    <label>Admin email</label>
+    <label>Invite link to channel</label>
     <div class="input-group">
-      <input type="email" class="form-control" id="admin_email" name="admin_email" value="{{ $admin_email or '' }}" required>
+      <input type="text" class="form-control" id="chat_link" name="chat_link" value="{{ $chat_link or '' }}" required>
     </div>
   </div>
   <div class="form-group">
