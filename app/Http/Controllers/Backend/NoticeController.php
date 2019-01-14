@@ -122,6 +122,7 @@ class NoticeController extends Controller
       }
       $user->subscribe_date = NULL;
       $user->in_chat = 0;
+      $user->sub_notice = 0;
       $user->tarif = NULL;
       $user->save();
 
@@ -132,12 +133,12 @@ class NoticeController extends Controller
       $sign_month              = md5($merchant_id.':'.$subscription_cost_month.':'.$secret_word.':'.$user->id);
       $sign_year              = md5($merchant_id.':'.$subscription_cost_year.':'.$secret_word.':'.$user->id);
 
-      $text  = sprintf('%s' . PHP_EOL, 'Срок действия вашей подписки истек. Вы были удалены из чата.');
-      $text .= sprintf('%s' . PHP_EOL, 'Чтобы вступить в чат оплатите подписку.');
+      $text  = sprintf('%s' . PHP_EOL, 'Срок действия вашей подписки истек. Вы были удалены из канала.');
+      $text .= sprintf('%s' . PHP_EOL, 'Чтобы вступить в канал оплатите подписку.');
       $text .= sprintf('%s' . PHP_EOL, 'Стоимость недельной подписки: ' . $subscription_cost_week . ' руб/мес');
       $text .= sprintf('%s' . PHP_EOL, 'Стоимость месячной подписки: ' . $subscription_cost_month . ' руб/мес');
       $text .= sprintf('%s' . PHP_EOL, 'Стоимость годовой подписки: ' . $subscription_cost_year . ' руб/мес');
-      $text .= 'ВНИМАНИЕ! Ссылка на оплату действительна в течении дня, для генерации новой ссылки введите /start и произведите оплату';
+      $text .= 'ВНИМАНИЕ! Ссылка на оплату действительна в течении дня, для генерации новой ссылки введите /start и выберите тариф';
 
       $url_week   = 'http://www.free-kassa.ru/merchant/cash.php?' . 'm=' . $merchant_id . '&oa=' . $subscription_cost_week . '&o=' . $user->id . '&s=' . $sign_week . '&us_type=subscribe&us_rate=week';
       $url_month   = 'http://www.free-kassa.ru/merchant/cash.php?' . 'm=' . $merchant_id . '&oa=' . $subscription_cost_month . '&o=' . $user->id . '&s=' . $sign_month . '&us_type=subscribe&us_rate=month';

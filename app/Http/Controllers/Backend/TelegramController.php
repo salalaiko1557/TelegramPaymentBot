@@ -49,86 +49,29 @@ class TelegramController extends Controller
    */
   public function webhookHandler() {
 
-    // //Kick and bannded user - Alexander
-    // $this->telegram->kickChatMember([
-    //     'chat_id' => '-1001422407913',
-    //     'user_id' => '725686975'
-    // ]);
-
-    // //Unban user - Alexander
-    // $this->telegram->unbanChatMember([
-    //     'chat_id' => '-1001422407913',
-    //     'user_id' => '725686975'
-    // ]);
-
    $update  = $this->telegram->commandsHandler(true);
-
-//    $channel_post = $update->getChannelPost();
-//    $channel_type = $channel_post['chat']['type'];
-
-//    if(null == $channel_type){
-//        $message = $update->getMessage();
-
-//        if (null == $message) {
-//        $message = $update->getCallbackQuery()->getMessage();
-//        }
-
-  //      $from = $message->getFrom();
-    //    $chat_data = $message->getChat();
-  //  }
-
-    // info(print_r($message, true));
-
-    // if ('channel' == $channel_type) {
-    //    $chat = Chat::find($channel_post['chat']['id']);
-    //    if ( ! $chat) {
-    //         $chat = Chat::create(json_decode($channel_post['chat'], true));
-    //    }
-
-
-    //    if (null !== $message->getNewChatMember()) {
-
-    //      $user_data = $message->getNewChatMember();
-    //      $teluser   = self::getUserData($user_data);
-
-    //      if ($teluser->subscribe_date != null) {
-
-    //        $sub_date = new \DateTime($teluser->subscribe_date);
-    //       $sub_end  = $sub_date->modify('+30 day');
-    //       $sub_end  = $sub_end->format('Y-m-d');
-    //        $now      = new \DateTime();
-    //         info(print_r($now, true));
-    //       $now      = $now->format('Y-m-d');
-    //       $result   = ($now > $sub_end);
-
-    //       if ($result) {
-
-    //         $this->telegram->kickChatMember([
-    //           'chat_id' => $channel_post['chat']['id'],
-    //           'user_id' => $user_data->getId()
-    //         ]);
-
-    //         $teluser->in_chat = 0;
-    //         $teluser->save();
-    //       } else {
-
-    //         $teluser->in_chat = 1;
-    //         $teluser->save();
-    //       }
-    //     } else {
-
-    //       $this->telegram->kickChatMember([
-    //         'chat_id' => $channel_post['chat']['id'],
-    //         'user_id' => $user_data->getId()
-    //       ]);
-
-    //       $teluser->in_chat = 0;
-    //       $teluser->save();
-    //     }
-    //   }
-    //}
-
-        $this->subscribe($update);
+	$type = $update->detectType();
+	if($type == 'callback_query'){
+		$telegram_user_id = $update->getCallbackQuery()->getFrom()->getId();
+		$user = TelegramUser::find($telegram_user_id);
+		if(! $user){
+		       $response = $this->telegram->sendMessage([
+         		'chat_id'      => $telegram_user_id,
+         		'text'         => 'Нажмите /start что-бы зарегистрироваться'
+		       ]);
+		}
+	}
+	if($type == 'message'){
+ 		$telegram_user_id = $update->getMessage()->getFrom()->getId();
+                $user = TelegramUser::find($telegram_user_id);
+                if(! $user){
+                       $response = $this->telegram->sendMessage([
+                        'chat_id'      => $telegram_user_id,
+                        'text'         => 'Нажмите /start что-бы зарегистрироваться'
+                       ]);
+                }
+	}
+   $this->subscribe($update);
 
     return 'Ok';
   }
