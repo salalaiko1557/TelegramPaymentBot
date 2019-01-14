@@ -19,78 +19,71 @@ class NoticeController extends Controller
   /**
    * Notice admin
    */
-   public static function subscription_expires($days, $tarif) {
+//   public static function vebinar_paid(Order $order)
+//   {
 
-     $telegram = new Api(Telegram::getAccessToken());
-     $now      = new \DateTime();
-     $last_pay = $now->modify('-'.$days.' day');
-     $last_pay = $now->modify('+2 day');
-     $last_pay = $last_pay->format('Y-m-d');
-     $users    = TelegramUser::whereDate('subscribe_date', '=', $last_pay)
-     ->where([
-        ['in_chat', '=', 1],
-        ['tarif', '=', $tarif],
-        ['sub_notice', '=', 0]
-     ])
-     ->take(5)
-     ->get();
+//     $url   = \URL::to('/') . '/admin/order/' . $order->id . '/edit';
+//     $email = Setting::getSettings('admin_email');
+//     $email = ($email) ? $email->value : 0;
+//     $data  = [
+//       'url' => $url
+//     ];
 
-     foreach($users as $user) {
+//     \Log::info('email');
+//     \Log::info(print_r($email, true));
 
-       $user->sub_notice = 1;
-       $user->save();
+//     Mail::send('emails.welcome', $data, function ($message) use ($email) {
+//       $message->to($email);
+//     });
+//   }
 
-       $reply_markup = new Keyboard();
-       $reply_markup->inline();
+  /**
+   * Notice users when subscription expires
+   */
+//   public static function subscription_expires() {
 
-       $subscription_cost_week  = Setting::getSettings('subscription_cost_week');
-       $subscription_cost_week  = ($subscription_cost_week) ? $subscription_cost_week->value : 0;
-       $subscription_cost_month = Setting::getSettings('subscription_cost_month');
-       $subscription_cost_month = ($subscription_cost_month) ? $subscription_cost_month->value : 0;
-       $subscription_cost_year  = Setting::getSettings('subscription_cost_year');
-       $subscription_cost_year  = ($subscription_cost_year) ? $subscription_cost_year->value : 0;
-       $merchant_id       = Setting::getSettings('merchant_id');
-       $merchant_id       = ($merchant_id) ? $merchant_id->value : 0;
-       $secret_word       = '0uv1cxfe';
-       $sign_week         = md5($merchant_id.':'.$subscription_cost_week.':'.$secret_word.':'.$user->id);
-       $sign_month        = md5($merchant_id.':'.$subscription_cost_month.':'.$secret_word.':'.$user->id);
-       $sign_year         = md5($merchant_id.':'.$subscription_cost_year.':'.$secret_word.':'.$user->id);
+//     $telegram = new Api(Telegram::getAccessToken());
+//     $now      = new \DateTime();
+//     $last_pay = $now->modify('-28 day');
+//     $last_pay = $last_pay->format('Y-m-d');
+//     $users    = TelegramUser::whereDate('subscribe_date', '=', $last_pay)->where('in_chat', '=', 1)->where('sub_notice', '=', 0)->take(5)->get();
 
-    $text  = sprintf('%s' . PHP_EOL, 'Срок действия Вашей подписки истекает через два дня. Вы можете продлить ее сейчас.');
-    $text .= sprintf('%s' . PHP_EOL, 'Стоимость недельной подписки: ' . $subscription_cost_week . ' руб/мес');
-    $text .= sprintf('%s' . PHP_EOL, 'Стоимость месячной подписки: ' . $subscription_cost_month . ' руб/мес');
-    $text .= sprintf('%s' . PHP_EOL, 'Стоимость годовой подписки: ' . $subscription_cost_year . ' руб/мес');
-    $text .= 'ВНИМАНИЕ! Ссылка на оплату действительна в течении дня, для генерации новой ссылки введите /start и произведите оплату';
-    $url_week   = 'http://www.free-kassa.ru/merchant/cash.php?' . 'm=' . $merchant_id . '&oa=' . $subscription_cost_week . '&o=' . $user->id . '&s=' . $sign_week . '&us_type=subscribe&us_rate=week';
-    $url_month   = 'http://www.free-kassa.ru/merchant/cash.php?' . 'm=' . $merchant_id . '&oa=' . $subscription_cost_month . '&o=' . $user->id . '&s=' . $sign_month . '&us_type=subscribe&us_rate=month';
-    $url_year   = 'http://www.free-kassa.ru/merchant/cash.php?' . 'm=' . $merchant_id . '&oa=' . $subscription_cost_year . '&o=' . $user->id . '&s=' . $sign_year . '&us_type=subscribe&us_rate=year';
+//     foreach($users as $user) {
 
-        $sub_btn_week = Keyboard::inlineButton([
-            'text' => 'Оплатить на неделю',
-            'url'  => $url_week,
-        ]);
-        $sub_btn_month = Keyboard::inlineButton([
-            'text' => 'Оплатить на месяц',
-            'url'  => $url_month,
-        ]);
-        $sub_btn_year = Keyboard::inlineButton([
-            'text' => 'Оплатить на год',
-            'url'  => $url_year,
-        ]);
+//       $user->sub_notice = 1;
+//       $user->save();
 
-        $reply_markup->row(
-            $sub_btn_week,
-            $sub_btn_month,
-            $sub_btn_year
-          );
+//       $reply_markup = new Keyboard();
+//       $reply_markup->inline();
 
-      $telegram->sendMessage([
-        'chat_id'      => $user->id,
-        'text'         => $text,
-        'reply_markup' => $reply_markup
-      ]);
-    }
-   }
+//       $subscription_cost = Setting::getSettings('subscription_cost');
+//       $subscription_cost = ($subscription_cost) ? $subscription_cost->value : 0;
+//       $merchant_id       = Setting::getSettings('merchant_id');
+//       $merchant_id       = ($merchant_id) ? $merchant_id->value : 0;
+//       $secret_word       = 'ignetdapassion';
+//       $sign              = md5($merchant_id.':'.$subscription_cost.':'.$secret_word.':'.$user->id);
+
+//       $text  = sprintf('%s' . PHP_EOL, 'Срок действия вашей подписки истекает через три дня');
+//       $text .= sprintf('%s' . PHP_EOL, 'Стоимость: ' . $subscription_cost . ' руб/мес');
+//       $url   = 'http://www.free-kassa.ru/merchant/cash.php?' . 'm=' . $merchant_id . '&oa=' . $subscription_cost . '&o=' . $user->id . '&s=' . $sign . '&us_type=subscribe';
+
+//       $sub_btn = Keyboard::inlineButton([
+//         'text' => 'Оплатить',
+//         'url'  => $url,
+//       ]);
+
+//       $reply_markup->row(
+//         $sub_btn
+//       );
+
+//       $telegram->sendMessage([
+//         'chat_id'      => $user->id,
+//         'text'         => $text,
+//         'reply_markup' => $reply_markup
+//       ]);
+//     }
+//   }
+
   /**
    * Notice users when subscription expired
    */
@@ -99,6 +92,7 @@ class NoticeController extends Controller
     $now      = new \DateTime();
     $last_pay = $now->modify('-'.$days.' day');
     $last_pay = $last_pay->format('Y-m-d H:i:s');
+info(print_r($last_pay, true));
     $users    = TelegramUser::whereDate('subscribe_date', '<', $last_pay)
                 ->where([
                     ['in_chat', '=', 1],
@@ -137,12 +131,10 @@ class NoticeController extends Controller
       $text .= sprintf('%s' . PHP_EOL, 'Стоимость недельной подписки: ' . $subscription_cost_week . ' руб/мес');
       $text .= sprintf('%s' . PHP_EOL, 'Стоимость месячной подписки: ' . $subscription_cost_month . ' руб/мес');
       $text .= sprintf('%s' . PHP_EOL, 'Стоимость годовой подписки: ' . $subscription_cost_year . ' руб/мес');
-      $text .= 'ВНИМАНИЕ! Ссылка на оплату действительна в течении дня, для генерации новой ссылки введите /start и произведите оплату';
 
       $url_week   = 'http://www.free-kassa.ru/merchant/cash.php?' . 'm=' . $merchant_id . '&oa=' . $subscription_cost_week . '&o=' . $user->id . '&s=' . $sign_week . '&us_type=subscribe&us_rate=week';
       $url_month   = 'http://www.free-kassa.ru/merchant/cash.php?' . 'm=' . $merchant_id . '&oa=' . $subscription_cost_month . '&o=' . $user->id . '&s=' . $sign_month . '&us_type=subscribe&us_rate=month';
       $url_year   = 'http://www.free-kassa.ru/merchant/cash.php?' . 'm=' . $merchant_id . '&oa=' . $subscription_cost_year . '&o=' . $user->id . '&s=' . $sign_year . '&us_type=subscribe&us_rate=year';
-
 
       $telegram->kickChatMember([
         'chat_id' => $chat_id,
@@ -150,10 +142,12 @@ class NoticeController extends Controller
       ]);
       $reply_markup = new Keyboard();
       $reply_markup->inline();
+info('OK6');
       $sub_btn_week = Keyboard::inlineButton([
         'text' => 'Оплатить на неделю',
         'url'  => $url_week,
       ]);
+info('OK7');
       $sub_btn_month = Keyboard::inlineButton([
         'text' => 'Оплатить на месяц',
         'url'  => $url_month,
@@ -162,17 +156,20 @@ class NoticeController extends Controller
         'text' => 'Оплатить на год',
         'url'  => $url_year,
       ]);
+info('OK8');
       $reply_markup->row(
         $sub_btn_week,
         $sub_btn_month,
         $sub_btn_year
       );
+info('OK9');
       $telegram->sendMessage([
         'chat_id'      => $user->id,
         'text'         => $text,
         'reply_markup' => $reply_markup
       ]);
     }
+info('OK10');
   }
 
   /**

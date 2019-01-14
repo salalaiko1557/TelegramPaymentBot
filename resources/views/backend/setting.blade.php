@@ -28,12 +28,6 @@
     </div>
   </div>
   <div class="form-group">
-    <label>Admin email</label>
-    <div class="input-group">
-      <input type="email" class="form-control" id="admin_email" name="admin_email" value="{{ $admin_email ?? '' }}" required>
-    </div>
-  </div>
-  <div class="form-group">
     <label>Merchant id</label>
     <div class="input-group">
       <input type="number" class="form-control" id="merchant_id" name="merchant_id" value="{{ $merchant_id ?? '' }}" required>
@@ -66,7 +60,7 @@
   <div class="form-group">
     <label>Chat</label>
     <div class="input-group">
-      <select name="chat_id" class="form-control">
+     {{-- <select name="chat_id" class="form-control">
         @if (isset($chat_id))
 
           @foreach ($chats as $chat)
@@ -78,7 +72,8 @@
             <option value="{{ $chat['id'] }}"> {{ $chat['title'] }}</option>
           @endforeach
         @endif
-      </select>
+      </select> --}}
+      <input type="text" class="form-control" id="chat_id" name="chat_id" value="{{ $chat_id ?? '' }}" required>
     </div>
   </div>
   <button type="submit" class="btn btn-primary">Сохранить</button>

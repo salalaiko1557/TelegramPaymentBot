@@ -49,66 +49,84 @@ class TelegramController extends Controller
    */
   public function webhookHandler() {
 
-    $update  = $this->telegram->commandsHandler(true);
+    // //Kick and bannded user - Alexander
+    // $this->telegram->kickChatMember([
+    //     'chat_id' => '-1001422407913',
+    //     'user_id' => '725686975'
+    // ]);
 
-    info($update);
+    // //Unban user - Alexander
+    // $this->telegram->unbanChatMember([
+    //     'chat_id' => '-1001422407913',
+    //     'user_id' => '725686975'
+    // ]);
 
-    $message = $update->getMessage();
+   $update  = $this->telegram->commandsHandler(true);
+
+//    $channel_post = $update->getChannelPost();
+//    $channel_type = $channel_post['chat']['type'];
+
+//    if(null == $channel_type){
+//        $message = $update->getMessage();
+
+//        if (null == $message) {
+//        $message = $update->getCallbackQuery()->getMessage();
+//        }
+
+  //      $from = $message->getFrom();
+    //    $chat_data = $message->getChat();
+  //  }
+
+    // info(print_r($message, true));
+
+    // if ('channel' == $channel_type) {
+    //    $chat = Chat::find($channel_post['chat']['id']);
+    //    if ( ! $chat) {
+    //         $chat = Chat::create(json_decode($channel_post['chat'], true));
+    //    }
 
 
-    if (null == $message) {
-      $message = $update->getCallbackQuery()->getMessage();
-    }
+    //    if (null !== $message->getNewChatMember()) {
 
-    $from      = $message->getFrom();
-    $chat_data = $message->getChat();
+    //      $user_data = $message->getNewChatMember();
+    //      $teluser   = self::getUserData($user_data);
 
-    if ('supergroup' == $chat_data->getType()) {
-      $chat = Chat::find($chat_data->getId());
-      if ( ! $chat) {
-        $chat = Chat::create(json_decode($chat_data, true));
-      }
+    //      if ($teluser->subscribe_date != null) {
 
-      if (null !== $message->getNewChatMember()) {
+    //        $sub_date = new \DateTime($teluser->subscribe_date);
+    //       $sub_end  = $sub_date->modify('+30 day');
+    //       $sub_end  = $sub_end->format('Y-m-d');
+    //        $now      = new \DateTime();
+    //         info(print_r($now, true));
+    //       $now      = $now->format('Y-m-d');
+    //       $result   = ($now > $sub_end);
 
-        $user_data = $message->getNewChatMember();
-        $teluser   = self::getUserData($user_data);
+    //       if ($result) {
 
-        if ($teluser->subscribe_date != null) {
+    //         $this->telegram->kickChatMember([
+    //           'chat_id' => $channel_post['chat']['id'],
+    //           'user_id' => $user_data->getId()
+    //         ]);
 
-          $sub_date = new \DateTime($teluser->subscribe_date);
-          $sub_end  = $sub_date->modify('+30 day');
-          $sub_end  = $sub_end->format('Y-m-d');
-          $now      = new \DateTime();
-          $now      = $now->format('Y-m-d');
-          $result   = ($now > $sub_end);
+    //         $teluser->in_chat = 0;
+    //         $teluser->save();
+    //       } else {
 
-          if ($result) {
+    //         $teluser->in_chat = 1;
+    //         $teluser->save();
+    //       }
+    //     } else {
 
-            $this->telegram->kickChatMember([
-              'chat_id' => $chat_data->getId(),
-              'user_id' => $user_data->getId()
-            ]);
+    //       $this->telegram->kickChatMember([
+    //         'chat_id' => $channel_post['chat']['id'],
+    //         'user_id' => $user_data->getId()
+    //       ]);
 
-            $teluser->in_chat = 0;
-            $teluser->save();
-          } else {
-
-            $teluser->in_chat = 1;
-            $teluser->save();
-          }
-        } else {
-
-          $this->telegram->kickChatMember([
-            'chat_id' => $chat_data->getId(),
-            'user_id' => $user_data->getId()
-          ]);
-
-          $teluser->in_chat = 0;
-          $teluser->save();
-        }
-      }
-    }
+    //       $teluser->in_chat = 0;
+    //       $teluser->save();
+    //     }
+    //   }
+    //}
 
         $this->subscribe($update);
 
@@ -131,19 +149,25 @@ class TelegramController extends Controller
             $user_id       = $query->getCallbackQuery()->getFrom()->getId();
             $user          = TelegramUser::find($user_id);
             $text = 'Для недельной оплаты подписки, перейдите по ссылке';
-            $this->subscribe->subscribes(7, $user, $subscription_cost_week, $query, $text);
+            $tarif = 'week';
+	    $text = 'ВНИМАНИЕ! Ссылка действительна в течении дня, для генерации новой ссылки введите /start и произведите оплату';
+            $this->subscribe->subscribes(7, $user, $subscription_cost_week, $query, $text, $tarif);
        }
        if ($inline_action == 'subscribe_month'){
             $user_id       = $query->getCallbackQuery()->getFrom()->getId();
             $user          = TelegramUser::find($user_id);
             $text = 'Для месячной оплаты подписки, перейдите по ссылке';
-            $this->subscribe->subscribes(30, $user, $subscription_cost_month, $query, $text);
+            $tarif = 'month';
+	    $text = 'ВНИМАНИЕ! Ссылка действительна в течении дня, для генерации новой ссылки введите /start и произведите оплату';            
+	    $this->subscribe->subscribes(30, $user, $subscription_cost_month, $query, $text, $tarif);
         }
         if ($inline_action == 'subscribe_year'){
             $user_id       = $query->getCallbackQuery()->getFrom()->getId();
             $user          = TelegramUser::find($user_id);
             $text = 'Для годовой оплаты подписки, перейдите по ссылке';
-            $this->subscribe->subscribes(360, $user, $subscription_cost_year, $query, $text);
+            $tarif = 'year';
+	    $text = 'ВНИМАНИЕ! Ссылка действительна в течении дня, для генерации новой ссылки введите /start и произведите оплату';            
+	    $this->subscribe->subscribes(360, $user, $subscription_cost_year, $query, $text, $tarif);
         }
 
     }

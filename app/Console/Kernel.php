@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use App\Http\Controllers\Backend\NoticeController;
+use App\TelegramUser;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 class Kernel extends ConsoleKernel
@@ -25,16 +26,34 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-   
-      \Log::info('schedule');
-
+//Если недельная подписка, кикаем
       $schedule->call(function () {
-        NoticeController::subscription_expires();
+        NoticeController::subscription_expired(7, 'week');
+      })->everyMinute();
+//Если неделя - 2 дня то предупреждаем
+      $schedule->call(function () {
+        NoticeController::subscription_expires(7, 'week');
+      })->everyMinute();
+//Если месячная подписка, кикаем
+      $schedule->call(function () {
+        NoticeController::subscription_expired(30, 'month');
+      })->everyMinute();
+//Если месяц - 2 дня то предупреждаем
+      $schedule->call(function () {
+        NoticeController::subscription_expires(30, 'month');
+      })->everyMinute();
+//Если годовая подписка, кикаем
+      $schedule->call(function () {
+        NoticeController::subscription_expired(360, 'year');
+      })->everyMinute();
+//Если год - 2 дня то предупреждаем
+      $schedule->call(function () {
+        NoticeController::subscription_expires(360, 'year');
       })->everyMinute();
 
-      $schedule->call(function () {
-        NoticeController::subscription_expired();
-      })->everyMinute();
+    //   $schedule->call(function () {
+    //     NoticeController::subscription_expired();
+    //   })->everyMinute();
 
     }
 
